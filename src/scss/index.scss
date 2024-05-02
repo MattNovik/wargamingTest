@@ -1,0 +1,40 @@
+@import './reboot';
+@import './fonts';
+
+html {
+  scroll-behavior: smooth;
+  font-size: size-desktop(16px);
+  line-height: size-desktop(24px);
+
+  @include vp--1919 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+}
+
+.visibility-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  -webkit-clip-path: inset(100%);
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: none;
+  -webkit-text-fill-color: unset;
+}
+
+input:-internal-autofill-selected {
+  color: unset;
+}
