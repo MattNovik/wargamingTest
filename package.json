@@ -1,7 +1,7 @@
 {
-  "name": "templatevitereact",
+  "name": "wargamingTest",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.9.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,10 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.16",
+    "@mui/material": "^5.15.16",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "axios": "^1.6.8",
     "mkcert": "^3.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-medium-image-zoom": "^5.2.0",
+    "react-toastify": "^10.0.5",
+    "styled-components": "^6.1.9",
     "vite-plugin-mkcert": "^1.17.5"
   },
   "devDependencies": {

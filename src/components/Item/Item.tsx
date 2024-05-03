@@ -1,71 +1,76 @@
-import { useEffect, useState } from 'react';
+import 'react-medium-image-zoom/dist/styles.css';
 import './Item.scss';
+import { useState } from 'react';
+import Zoom from 'react-medium-image-zoom';
 
-const Item = (data: any) => {
-  const [shipData, setShipData] = useState(data?.data);
+const Item = ({ data, itemRef }: { data: any; itemRef: any }) => {
+  const [shipData, setShipData] = useState(data);
   const [descriptionState, setDescriptionState] = useState<boolean>(true);
 
   const handleDescriptionOpener = () => {
-    setDescriptionState(false);
+    setDescriptionState(!descriptionState);
   };
 
   return (
-    <div className="item">
-      {shipData.icons ? (
+    <div className="item" ref={itemRef}>
+      {shipData?.icons ? (
         <ul className="item__list-images">
-          {shipData.icons?.large ? (
-            <img src={shipData.icons.large} width="200" height="200" />
-          ) : null}
-          {shipData.icons?.medium ? (
-            <img src={shipData.icons.medium} width="100" height="100" />
+          {shipData?.icons?.large ? (
+            <Zoom>
+              <img src={shipData?.icons.large} width="300" height="200" />
+            </Zoom>
+          ) : shipData?.icons?.medium ? (
+            <Zoom>
+              <img src={shipData?.icons.medium} width="300" height="100" />
+            </Zoom>
           ) : null}
         </ul>
       ) : null}
-      <ul className="item__list-char">
-        <li className="item__item-char">
-          <p className="item__elem-title item__elem-title--name">Название:</p>
-          <p className="item__name">{shipData.title}</p>
-        </li>
-        <li className="item__item-char">
-          <p className="item__elem-title item__elem-title--level">Уровень:</p>
-          <p className="item__level">{shipData.level}</p>
-        </li>
-        <li className="item__item-char">
-          <p className="item__elem-title item__elem-title--type">Тип:</p>
-          <p className="item__type">{shipData.type.title}</p>
-        </li>
-        <li className="item__item-char">
-          <p className="item__elem-title item__elem-title--nation">Нация:</p>
-          <p className="item__nation">{shipData.nation.title}</p>
-          <img
-            src={shipData.nation.icons.large}
-            width="50"
-            height="50"
-            className="item__nation-icon"
-          />
-        </li>
-        <li className="item__item-char item__item-char--description">
+      <div className="item__info">
+        <ul className="item__list-char">
+          <li className="item__item-char">
+            <p className="item__elem-title item__elem-title--name">Название:</p>
+            <p className="item__name">{shipData?.title}</p>
+          </li>
+          <li className="item__item-char">
+            <p className="item__elem-title item__elem-title--level">Уровень:</p>
+            <p className="item__level">{shipData?.level}</p>
+          </li>
+          <li className="item__item-char">
+            <p className="item__elem-title item__elem-title--type">Тип:</p>
+            <p className="item__type">{shipData?.type?.title}</p>
+          </li>
+          <li className="item__item-char">
+            <p className="item__elem-title item__elem-title--nation">Нация:</p>
+            <p className="item__nation">{shipData?.nation?.title}</p>
+            <img
+              src={shipData?.nation?.icons?.large}
+              width="50"
+              height="50"
+              className="item__nation-icon"
+            />
+          </li>
+        </ul>
+        <div className="item__description">
           <p className="item__elem-title item__elem-title--description">
             Описание:
-            {descriptionState ? (
-              <button
-                type="button"
-                className="item__description-opener"
-                onClick={handleDescriptionOpener}
-              >
-                Развернуть
-              </button>
-            ) : null}
+            <button
+              type="button"
+              className="item__description-opener"
+              onClick={handleDescriptionOpener}
+            >
+              {descriptionState ? 'Развернуть' : 'Скрыть'}
+            </button>
           </p>
           <p
-            className={`item__description ${
-              descriptionState ? 'item__description--hide' : null
+            className={`item__description-text ${
+              descriptionState ? 'item__description-text--hide' : null
             }`}
           >
-            {shipData.description}
+            {shipData?.description}
           </p>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   );
 };

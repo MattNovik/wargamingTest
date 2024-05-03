@@ -1,0 +1,77 @@
+.filter {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  color: $color-default-white;
+
+  @include vp--1023 {
+    padding: 20px;
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    row-gap: 10px;
+    column-gap: 10px;
+    margin: 0 0 20px;
+  }
+
+  &__counts {
+    margin: 0;
+  }
+
+  &__button-opener {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    outline: none;
+    background-color: $color-transparent;
+    padding: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    min-width: 75px;
+    color: $color-default-white;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: auto;
+    row-gap: 10px;
+    column-gap: 10px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: overflow 0.3s ease, opacity 0.3s ease, max-height 0.3s ease;
+
+    &--opened {
+      overflow: visible;
+      opacity: 1;
+      max-height: 1000px;
+    }
+
+    @include vp--1023 {
+      grid-template-columns: 1fr 1fr;
+      row-gap: 20px;
+    }
+
+    @include vp--767 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__loader-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

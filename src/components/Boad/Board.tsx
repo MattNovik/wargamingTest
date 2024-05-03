@@ -1,24 +1,44 @@
 import './Board.scss';
 import { useEffect, useState } from 'react';
 import Item from '../Item/Item';
+import ShipLoader from '../../assets/img/ship_loader.gif';
 
-const Board = (data: any) => {
-  const [shipsList, setShipsList] = useState<any>(data?.data);
+const Board = ({
+  data,
+  loadingState,
+  itemRef,
+}: {
+  data: any;
+  loadingState: boolean;
+  itemRef: any;
+}) => {
+  const [shipsList, setShipsList] = useState<any>(null);
 
   useEffect(() => {
-    if (data && data.length) {
+    if (data) {
       setShipsList(data);
     }
-    console.log(data);
   }, [data]);
 
   return (
     <div className="board">
-      {shipsList && shipsList.length
-        ? shipsList.map((item: any) => {
-            return <Item data={item} />;
-          })
-        : null}
+      {loadingState ? (
+        <div className="board__loader-wrapper">
+          <img src={ShipLoader} width="50" height="50" alt="loader" />
+        </div>
+      ) : null}
+      {shipsList ? (
+        shipsList.length ? (
+          shipsList.map((item: any, index: number) => (
+            <Item data={item} itemRef={itemRef} key={index + item.title} />
+          ))
+        ) : (
+          <div className="board__no-data">
+            По вашему запросу ничего не найдено! <br /> Попробуйте изменить ваш
+            запрос
+          </div>
+        )
+      ) : null}
     </div>
   );
 };

@@ -1,9 +1,31 @@
 .board {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-auto-rows: auto;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   row-gap: 20px;
   column-gap: 20px;
   padding: 40px;
-  background-color: #005493;
+
+  @include vp--1023 {
+    padding: 20px;
+  }
+
+  &__loader-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__no-data {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    color: $color-default-white;
+    line-height: 110%;
+    text-align: center;
+    font-size: 2rem;
+  }
 }
