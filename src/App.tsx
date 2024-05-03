@@ -4,6 +4,7 @@ import Board from './components/Boad/Board';
 import api from './api/api';
 import Filter from './components/Filter/Filter';
 import { toast } from 'react-toastify';
+import Preview from './components/Preview/Preview';
 
 const QUERY_STRING = `query Vehicles($languageCode: String = "ru") {
   vehicles(lang: $languageCode) {
@@ -45,6 +46,8 @@ const App = () => {
     useState<number>(limitLoadingItems);
   const [filterList, setFilterList] = useState<any>(null);
   const [allShipCounts, setAllShipCounts] = useState<number>(0);
+
+  const [previewState, setPreviewState] = useState<boolean>(true);
 
   const observer = useRef<HTMLDivElement | null>();
 
@@ -239,27 +242,33 @@ const App = () => {
 
   return (
     <div className={`App ${loadingState ? 'App--loading' : ''}`}>
-      <Filter
-        allShipCount={allShipCounts}
-        loadingState={loadingState}
-        filterList={filterList}
-        setFilterList={setFilterList}
-      />
-      <Board
-        data={shipstList}
-        loadingState={loadingState}
-        itemRef={lastItemRef}
-      />
-      {scroll > 150 ? (
-        <button
-          type="button"
-          onClick={scrollIntoView}
-          className="App__to-header"
-        >
-          Наверх
-        </button>
+      {previewState ? (
+        <Preview setPreviewState={setPreviewState} />
       ) : (
-        ''
+        <>
+          <Filter
+            allShipCount={allShipCounts}
+            loadingState={loadingState}
+            filterList={filterList}
+            setFilterList={setFilterList}
+          />
+          <Board
+            data={shipstList}
+            loadingState={loadingState}
+            itemRef={lastItemRef}
+          />
+          {scroll > 150 ? (
+            <button
+              type="button"
+              onClick={scrollIntoView}
+              className="App__to-header"
+            >
+              Наверх
+            </button>
+          ) : (
+            ''
+          )}
+        </>
       )}
     </div>
   );
