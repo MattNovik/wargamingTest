@@ -2,6 +2,7 @@ import { useState } from 'react';
 import CustomSelectMui from '../CustomSelectMui/CustomSelectMui';
 import ShipLoader from '../../assets/img/ship_loader.gif';
 import './Filter.scss';
+import { FilterObject } from '../../types';
 
 const Filter = ({
   loadingState,
@@ -11,7 +12,7 @@ const Filter = ({
 }: {
   allShipCount: number;
   loadingState: boolean;
-  filterList: Array<any>;
+  filterList: FilterObject | null;
   setFilterList: any;
 }) => {
   const [openState, setOpenState] = useState<boolean>(true);
@@ -22,7 +23,7 @@ const Filter = ({
   return (
     <div className="filter">
       {loadingState ? (
-        <div className='filter__loader-wrapper'>
+        <div className="filter__loader-wrapper">
           <img src={ShipLoader} width="50" height="50" alt="loader" />
         </div>
       ) : (

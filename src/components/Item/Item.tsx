@@ -2,8 +2,17 @@ import 'react-medium-image-zoom/dist/styles.css';
 import './Item.scss';
 import { useState } from 'react';
 import Zoom from 'react-medium-image-zoom';
+import { ItemTypeElem } from '../../types';
 
-const Item = ({ data, itemRef }: { data: any; itemRef: any }) => {
+const Item = ({
+  data,
+  itemRef,
+  type,
+}: {
+  data: ItemTypeElem;
+  itemRef: any;
+  type: boolean;
+}) => {
   const [shipData, setShipData] = useState(data);
   const [descriptionState, setDescriptionState] = useState<boolean>(true);
 
@@ -12,7 +21,7 @@ const Item = ({ data, itemRef }: { data: any; itemRef: any }) => {
   };
 
   return (
-    <div className="item" ref={itemRef}>
+    <div className={`item ${type ? 'item--tablet' : ''}`} ref={itemRef}>
       {shipData?.icons ? (
         <ul className="item__list-images">
           {shipData?.icons?.large ? (

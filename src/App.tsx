@@ -5,6 +5,12 @@ import api from './api/api';
 import Filter from './components/Filter/Filter';
 import { toast } from 'react-toastify';
 import Preview from './components/Preview/Preview';
+import {
+  ItemTypeElem,
+  FilterObject,
+  FilterItem,
+  FilterItemLevel,
+} from './types';
 
 const QUERY_STRING = `query Vehicles($languageCode: String = "ru") {
   vehicles(lang: $languageCode) {
@@ -37,14 +43,16 @@ const QUERY_STRING = `query Vehicles($languageCode: String = "ru") {
  `;
 
 const App = () => {
-  const [allShipsList, setAllShipsList] = useState<any>(null);
-  const [filteredAllShipsList, setFilteredShipsList] = useState<any>(null);
-  const [shipstList, setShipsList] = useState<any>(null);
+  const [allShipsList, setAllShipsList] = useState<ItemTypeElem[] | null>(null);
+  const [filteredAllShipsList, setFilteredShipsList] = useState<ItemTypeElem[] | null>(
+    null
+  );
+  const [shipstList, setShipsList] = useState<ItemTypeElem[] | null>(null);
   const [loadingState, setLoadingState] = useState<boolean>(true);
   const [limitLoadingItems, setLimitLoadingItems] = useState<number>(20);
   const [offsetLoadingItems, setOffsetLoadingItems] =
     useState<number>(limitLoadingItems);
-  const [filterList, setFilterList] = useState<any>(null);
+  const [filterList, setFilterList] = useState<FilterObject | null>(null);
   const [allShipCounts, setAllShipCounts] = useState<number>(0);
 
   const [previewState, setPreviewState] = useState<boolean>(true);
@@ -99,7 +107,7 @@ const App = () => {
     [filteredAllShipsList, offsetLoadingItems]
   );
 
-  const generateFilters = (data: any) => {
+  const generateFilters = (data: ItemTypeElem[]) => {
     let filterData: any = {
       level: [],
       type: [],
@@ -135,7 +143,7 @@ const App = () => {
     setFilterList({ ...filterData });
   };
 
-  const updateListShips = (data: any) => {
+  const updateListShips = (data: ItemTypeElem[]) => {
     setFilteredShipsList(data);
     setAllShipCounts(data.length);
     let loadingData = data.slice(0, limitLoadingItems);
@@ -148,52 +156,57 @@ const App = () => {
   };
 
   const filterItems = () => {
-    let filteredList = [...allShipsList];
-    let generatedList: any = [];
+    let filteredList: ItemTypeElem[] = [...allShipsList];
+    let generatedList: ItemTypeElem[] = [];
     let isFiltered = false;
-    Object.entries(filterList).forEach(function ([key, values]) {
-      if (values.some((item: any) => item.checked === true)) {
-        let checkedArray = values.map((item: any) => {
-          if (item.checked === true) {
-            return item.title;
-          }
-        });
+    if (filterList) {
+      Object.entries(filterList).forEach(function ([key, values]: {
+        key: string | FilterObject;
+        values: FilterItemLevel[] | FilterItem[];
+      }) {
+        if (values.some((item: any) => item.checked === true)) {
+          let checkedArray = values.map((item: any) => {
+            if (item.checked === true) {
+              return item.title;
+            }
+          });
 
-        if (checkedArray.length) {
-          if (isFiltered) {
-            generatedList = generatedList.filter((item: any) => {
-              if (key === 'level') {
-                return checkedArray.includes(item.level);
-              }
-              if (key === 'type') {
-                return checkedArray.includes(item.type.name);
-              }
-              if (key === 'nation') {
-                return checkedArray.includes(item.nation.name);
-              }
-            });
-          } else {
-            generatedList = filteredList.filter((item: any) => {
-              if (key === 'level') {
-                return checkedArray.includes(item.level);
-              }
-              if (key === 'type') {
-                return checkedArray.includes(item.type.name);
-              }
-              if (key === 'nation') {
-                return checkedArray.includes(item.nation.name);
-              }
-            });
+          if (checkedArray.length) {
+            if (isFiltered) {
+              generatedList = generatedList.filter((item: any) => {
+                if (key === 'level') {
+                  return checkedArray.includes(item.level);
+                }
+                if (key === 'type') {
+                  return checkedArray.includes(item.type.name);
+                }
+                if (key === 'nation') {
+                  return checkedArray.includes(item.nation.name);
+                }
+              });
+            } else {
+              generatedList = filteredList.filter((item: any) => {
+                if (key === 'level') {
+                  return checkedArray.includes(item.level);
+                }
+                if (key === 'type') {
+                  return checkedArray.includes(item.type.name);
+                }
+                if (key === 'nation') {
+                  return checkedArray.includes(item.nation.name);
+                }
+              });
+            }
+            isFiltered = true;
           }
-          isFiltered = true;
         }
-      }
-    });
+      });
 
-    if (isFiltered) {
-      updateListShips(generatedList);
-    } else {
-      updateListShips(filteredList);
+      if (isFiltered) {
+        updateListShips(generatedList);
+      } else {
+        updateListShips(filteredList);
+      }
     }
   };
 

@@ -2,11 +2,42 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import autoprefixer from 'autoprefixer';
 import viteSvgr from 'vite-plugin-svgr';
+import { fileURLToPath } from 'url';
 import mkcert from 'vite-plugin-mkcert';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [viteSvgr(), react(),mkcert(),],
+  plugins: [viteSvgr({
+    svgrOptions: {
+      // svgr options
+    },
+  }), react(), mkcert(),],
+
+  resolve: {
+    alias: {
+      // for TypeScript path alias import like : @/x/y/z
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+  build: {
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        dir: './dist',
+        assetFileNames: (assetInfo) => {
+          let extType = assetInfo.name.split('.').at(1);
+          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
+            extType = 'img';
+          }
+          return `assets/[name].[hash].[extname]`;
+        },
+        chunkFileNames: 'assets/[name].[hash].js',
+
+        entryFileNames: 'assets/[name].[hash].js',
+      },
+    },
+  },
+
   css: {
     postcss: {
       plugins: [autoprefixer()],
